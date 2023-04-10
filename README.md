@@ -46,8 +46,8 @@ A controller for the sabvoton ebike esc.
 ## Working with the controller
 
 ### Connectors
- - 1: programming connector (same as the original)
- - 2: usb connector (for programming the arduino)
+ - [ ] 1: programming connector (same as the original)
+ - [ ] 2: usb connector (for programming the arduino)
   
 ### Functions: 
  - [x] 1: set current gear (low, mid, high) - pins 03, 04
