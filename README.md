@@ -50,14 +50,14 @@ A controller for the sabvoton ebike esc.
  - 2: usb connector (for programming the arduino)
   
 ### Functions: 
- - 1: set current gear (low, mid, high) - pins 03, 04
- - 2: set motor power based on the torque sensor input - pin 19
- - 3: read battery voltage - pin 11
- - 4: turn controller on/off - pin 20
- - 5: enable/disable soft start - pins 24, 26
- - 6: get engine temperature - white wire
- - 7: get engine rpm - white wire
- - 8: get controller temperature - additional sensor
- - 9: get battery temperature - additional sensor
- - 10: send data to the display - additional display
- - 11: get data from the display - additional display
+ - [x] 1: set current gear (low, mid, high) - pins 03, 04
+ - [x] 2: set motor power based on the torque sensor input - pin 19
+ - [x] 3: read battery voltage - pin 11
+ - [x] 4: turn controller on/off - pin 20
+ - [ ] 5: enable/disable soft start - pins 24, 26
+ - [x] 6: get engine temperature - white wire
+ - [x] 7: get engine rpm - white wire
+ - [x] 8: get controller temperature - additional sensor
+ - [x] 9: get battery temperature - additional sensor
+ - [x] 10: send data to the display - additional display
+ - [x] 11: get data from the display - additional display
