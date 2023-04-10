@@ -58,5 +58,6 @@ A controller for the sabvoton ebike esc.
  - 6: get engine temperature - white wire
  - 7: get engine rpm - white wire
  - 8: get controller temperature - additional sensor
- - 9: send data to the display - additional display
- - 10: get data from the display - additional display
+ - 9: get battery temperature - additional sensor
+ - 10: send data to the display - additional display
+ - 11: get data from the display - additional display
