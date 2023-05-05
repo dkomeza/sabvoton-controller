@@ -1,4 +1,4 @@
-20916921974112056
+20925333846300190
 Audio_Module
 Reverb_BTDR-1H
 Digital Reverberation Unit, http://www.belton.co.kr/inc/downfile.php?seq=17&file=pdf (footprint from http://www.uk-electronic.de/PDF/BTDR-1.pdf)
@@ -87597,3 +87597,38 @@ varistor
 0
 2
 2
+lib
+BUTTON_SW
+
+
+0
+2
+2
+lib
+ESP32-WROOM-32
+Single 2.4 GHz Wi-Fi and Bluetooth combo chip https://www.espressif.com/sites/default/files/documentation/esp32-wroom-32_datasheet_en.pdf
+Single 2.4 GHz Wi-Fi and Bluetooth combo  chip
+0
+60
+39
+lib
+HALL_2x6
+
+
+0
+6
+6
+lib
+MAIN_3x10
+
+
+0
+30
+30
+lib
+Pogramming_1x5
+
+
+0
+5
+5
