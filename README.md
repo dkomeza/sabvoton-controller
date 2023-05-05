@@ -49,7 +49,7 @@ A controller for the sabvoton ebike esc.
 
 ### Connectors
 
-- [ ] 1: programming connector (same as the original)
+- [x] 1: programming connector (same as the original)
 - [x] 2: usb connector (for programming the arduino)
 
 ### Functions:
