@@ -32,6 +32,10 @@ void Controller::setGear(int gear) {
 void Controller::setThrottle(int throttle) {
     if (throttle == _throttle) return;
 
+    int throttleValue = getThrottleValue(throttle);
+
+    dacWrite(THROTTLE_PIN, throttleValue);
+
     _throttle = throttle;
 }
 
@@ -43,4 +47,8 @@ void Controller::setSoftStart(bool softStart) {
 
 int Controller::getVoltage() {
     return _voltage;
+}
+
+int Controller::getThrottleValue(int throttle) {
+    return map(throttle, 0, 100, 0, MAX_THROTTLE);
 }

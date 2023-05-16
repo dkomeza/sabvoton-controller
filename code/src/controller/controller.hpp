@@ -9,6 +9,10 @@
 #define GEAR_LOW_PIN 12
 #define GEAR_HIGH_PIN 13
 
+#define THROTTLE_PIN 25
+
+#define MAX_THROTTLE 188
+
 class Controller {
     public:
         void setPower(bool power);
@@ -22,6 +26,8 @@ class Controller {
         bool _power = false;
         bool _softStart = true;
         int _voltage = 0;
+
+        int getThrottleValue(int throttle);
 };
 
 extern Controller controller;
