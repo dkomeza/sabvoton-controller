@@ -13,6 +13,8 @@
 
 #define SOFT_START_PIN 15
 
+#define VOLTAGE_PIN 35
+
 #define MAX_THROTTLE 188
 
 class Controller {
@@ -28,6 +30,9 @@ class Controller {
         bool _power = false;
         bool _softStart = true;
         int _voltage = 0;
+
+        int _voltage_R1 = 1000000;
+        int _voltage_R2 = 56000;
 
         int getThrottleValue(int throttle);
 };

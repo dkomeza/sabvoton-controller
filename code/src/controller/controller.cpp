@@ -48,6 +48,16 @@ void Controller::setSoftStart(bool softStart) {
 }
 
 int Controller::getVoltage() {
+    int voltage = analogRead(VOLTAGE_PIN);
+
+    double voltageValue = voltage * 3.3 / 4095;
+
+    long double voltageDivider = _voltage_R2 / (_voltage_R1 + _voltage_R2); 
+
+    long double voltageDividerValue = voltageValue / voltageDivider;
+
+    _voltage = voltageDividerValue * 10;   
+
     return _voltage;
 }
 
