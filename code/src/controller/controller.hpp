@@ -4,6 +4,8 @@
 #include <Arduino.h>
 #include "../settings/settings.hpp"
 
+#define POWER_PIN 2
+
 class Controller {
     public:
         void setPower(bool power);

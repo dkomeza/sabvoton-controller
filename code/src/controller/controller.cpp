@@ -3,6 +3,8 @@
 void Controller::setPower(bool power) {
     if (power == _power) return;
 
+    digitalWrite(POWER_PIN, power);
+    
     _power = power;
 }
 
