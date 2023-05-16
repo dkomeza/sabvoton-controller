@@ -6,6 +6,9 @@
 
 #define POWER_PIN 2
 
+#define GEAR_LOW_PIN 12
+#define GEAR_HIGH_PIN 13
+
 class Controller {
     public:
         void setPower(bool power);
