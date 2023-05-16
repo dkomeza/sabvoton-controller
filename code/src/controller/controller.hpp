@@ -4,7 +4,7 @@
 #include <Arduino.h>
 #include "../settings/settings.hpp"
 
-#define POWER_PIN 2
+#define POWER_PIN 4
 
 #define GEAR_LOW_PIN 12
 #define GEAR_HIGH_PIN 13
