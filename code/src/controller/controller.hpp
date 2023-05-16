@@ -11,6 +11,8 @@
 
 #define THROTTLE_PIN 25
 
+#define SOFT_START_PIN 15
+
 #define MAX_THROTTLE 188
 
 class Controller {

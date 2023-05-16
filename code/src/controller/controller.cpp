@@ -42,6 +42,8 @@ void Controller::setThrottle(int throttle) {
 void Controller::setSoftStart(bool softStart) {
     if (softStart == _softStart) return;
 
+    digitalWrite(SOFT_START_PIN, softStart);
+
     _softStart = softStart;
 }
 
