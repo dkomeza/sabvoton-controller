@@ -5,10 +5,12 @@
 #include "./display/display.hpp"
 #include "./controller/controller.hpp"
 #include "./io/io.hpp"
+#include "./data/data.hpp"
 
 Display display;
 Controller controller;
 IO io;
+Data data;
 
 void handleDelay(long now);
 
