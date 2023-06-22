@@ -13,24 +13,24 @@
 #define THERMISTOR_BETA 3435
 #define SAMPLE_COUNT 10
 
-struct Temperature {
+struct Temperature
+{
     int battery;
     int motor;
     int controller;
 };
 
-class IO {
-    public: 
-        Temperature getTemperature();
+class IO
+{
+public:
+    void update();
 
-    private: 
-        int readTemperature(int pin);
-        int convertTemperature(float temperature);
+private:
+    Temperature getTemperature();
+    int readTemperature(int pin);
+    int convertTemperature(float temperature);
 };
-
-
 
 extern IO io;
 
-
-#endif 
+#endif

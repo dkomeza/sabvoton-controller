@@ -1,6 +1,11 @@
 #include "io.hpp"
 
-Temperature IO::getTemperature() {
+void IO::update()
+{
+}
+
+Temperature IO::getTemperature()
+{
     Temperature temperature;
 
     temperature.battery = readTemperature(BATTERY_TEMPERATURE_PIN);
@@ -10,9 +15,11 @@ Temperature IO::getTemperature() {
     return temperature;
 }
 
-int IO::readTemperature(int pin) {
+int IO::readTemperature(int pin)
+{
     float temperature = 0;
-    for (int i = 0; i < SAMPLE_COUNT; i++) {
+    for (int i = 0; i < SAMPLE_COUNT; i++)
+    {
         temperature += analogRead(pin);
     }
 
@@ -21,7 +28,8 @@ int IO::readTemperature(int pin) {
     return convertTemperature(temperature);
 }
 
-int IO::convertTemperature(float _temperature) {
+int IO::convertTemperature(float _temperature)
+{
     float temperature = 4095 / _temperature - 1;
     temperature = THERMISTOR_R1 / temperature;
 

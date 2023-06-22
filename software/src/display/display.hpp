@@ -3,7 +3,11 @@
 
 #include <Arduino.h>
 
-class Display {
+class Display
+{
+public:
+    Display();
+    void update();
 };
 
 extern Display display;

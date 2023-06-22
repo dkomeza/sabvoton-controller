@@ -1,6 +1,11 @@
 #include "controller.hpp"
 
-void Controller::setPower(bool power) {
+void Controller::update()
+{
+}
+
+void Controller::setPower(bool power)
+{
     if (power == _power) return;
 
     digitalWrite(POWER_PIN, power);

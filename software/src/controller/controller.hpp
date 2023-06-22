@@ -17,24 +17,28 @@
 
 #define MAX_THROTTLE 188
 
-class Controller {
-    public:
-        void setPower(bool power);
-        void setGear(int gear);
-        void setThrottle(int throttle);
-        void setSoftStart(bool softStart);
-        int getVoltage();
-    private:
-        int _gear = 0;
-        int _throttle = 0;
-        bool _power = false;
-        bool _softStart = true;
-        int _voltage = 0;
+class Controller
+{
+public:
+    void update();
 
-        int _voltage_R1 = 1000000;
-        int _voltage_R2 = 56000;
+    void setPower(bool power);
+    void setGear(int gear);
+    void setThrottle(int throttle);
+    void setSoftStart(bool softStart);
+    int getVoltage();
 
-        int getThrottleValue(int throttle);
+private:
+    int _gear = 0;
+    int _throttle = 0;
+    bool _power = false;
+    bool _softStart = true;
+    int _voltage = 0;
+
+    int _voltage_R1 = 1000000;
+    int _voltage_R2 = 56000;
+
+    int getThrottleValue(int throttle);
 };
 
 extern Controller controller;
