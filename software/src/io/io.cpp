@@ -2,6 +2,11 @@
 
 void IO::update()
 {
+    Temperature temperature = getTemperature();
+
+    data.batteryTemp = temperature.battery;
+    data.engineTemp = temperature.motor;
+    data.controllerTemp = temperature.controller;
 }
 
 Temperature IO::getTemperature()
@@ -40,4 +45,17 @@ int IO::convertTemperature(float _temperature)
     temperature = 1.0 / temperature;
     temperature -= 273.15;
     return temperature;
+}
+
+void IO::getVoltage()
+{
+    int voltage = analogRead(VOLTAGE_PIN);
+
+    double voltageValue = voltage * 3.3 / 4095;
+
+    long double voltageDivider = VOLTAGE_R2 / (VOLTAGE_R1 + VOLTAGE_R2);
+
+    long double voltageDividerValue = voltageValue / voltageDivider;
+
+    data.batteryVoltage = voltageDividerValue * 10;
 }

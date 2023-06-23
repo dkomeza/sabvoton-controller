@@ -1,11 +1,9 @@
 #include "display.hpp"
 
-Display::Display()
-{
-}
-
 void Display::update()
 {
+    receiveData();
+    sendData();
 }
 
 void Display::receiveData()
