@@ -20,6 +20,11 @@ public:
     int batteryTemp = 0;
 
     long batteryVoltage = 0;
+
+    bool power = false;
+    bool softStart = true;
+
+    int throttle = 0;
 };
 
 extern Data data;

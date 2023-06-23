@@ -2,6 +2,8 @@
 #define CONTROLLER_H
 
 #include <Arduino.h>
+
+#include "../data/data.hpp"
 #include "../settings/settings.hpp"
 
 #define POWER_PIN 4
@@ -20,19 +22,18 @@ class Controller
 public:
     void update();
 
+private:
+    int gear = 0;
+    int throttle = 0;
+    bool power = false;
+    bool softStart = true;
+
+    int getThrottleValue(int throttle);
+
     void setPower(bool power);
     void setGear(int gear);
     void setThrottle(int throttle);
     void setSoftStart(bool softStart);
-
-
-private:
-    int _gear = 0;
-    int _throttle = 0;
-    bool _power = false;
-    bool _softStart = true;
-
-    int getThrottleValue(int throttle);
 };
 
 extern Controller controller;

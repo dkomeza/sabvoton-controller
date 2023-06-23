@@ -2,24 +2,32 @@
 
 void Controller::update()
 {
+    setPower(data.power);
+
+    if (!data.power)
+        return;
+
+    setGear(data.gear);
+    setThrottle(data.throttle);
+    setSoftStart(data.softStart);
 }
 
-void Controller::setPower(bool power)
+void Controller::setPower(bool _power)
 {
     if (power == _power)
         return;
 
-    digitalWrite(POWER_PIN, power);
+    digitalWrite(POWER_PIN, _power);
 
-    _power = power;
+    power = _power;
 }
 
-void Controller::setGear(int gear)
+void Controller::setGear(int _gear)
 {
     if (gear == _gear)
         return;
 
-    switch (gear)
+    switch (_gear)
     {
     case 0:
         digitalWrite(GEAR_LOW_PIN, HIGH);
@@ -35,29 +43,36 @@ void Controller::setGear(int gear)
         break;
     }
 
-    _gear = gear;
+    gear = _gear;
 }
 
-void Controller::setThrottle(int throttle)
+void Controller::setThrottle(int _throttle)
 {
-    if (throttle == _throttle)
+    if (_throttle == throttle)
         return;
 
-    int throttleValue = getThrottleValue(throttle);
+    if (data.brake)
+    {
+        _throttle = 0;
+        dacWrite(THROTTLE_PIN, 0);
+        return;
+    }
+
+    int throttleValue = getThrottleValue(_throttle);
 
     dacWrite(THROTTLE_PIN, throttleValue);
 
-    _throttle = throttle;
+    throttle = _throttle;
 }
 
-void Controller::setSoftStart(bool softStart)
+void Controller::setSoftStart(bool _softStart)
 {
     if (softStart == _softStart)
         return;
 
-    digitalWrite(SOFT_START_PIN, softStart);
+    digitalWrite(SOFT_START_PIN, _softStart);
 
-    _softStart = softStart;
+    softStart = _softStart;
 }
 
 int Controller::getThrottleValue(int throttle)
