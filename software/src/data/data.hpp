@@ -8,6 +8,18 @@
  */
 class Data
 {
+public:
+    unsigned int speed = 0;
+
+    bool mode = false;
+    bool brake = false;
+    int gear = 0;
+
+    int engineTemp = 0;
+    int controllerTemp = 0;
+    int batteryTemp = 0;
+
+    long batteryVoltage = 0;
 };
 
 extern Data data;
