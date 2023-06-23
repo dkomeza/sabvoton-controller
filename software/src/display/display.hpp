@@ -7,6 +7,7 @@
 #include "../data/data.hpp"
 
 #define SEND_PACKET_SIZE 7
+#define RECEIVE_PACKET_SIZE 1
 
 class Display
 {

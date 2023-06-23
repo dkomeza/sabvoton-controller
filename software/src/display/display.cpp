@@ -10,6 +10,16 @@ void Display::update()
 
 void Display::receiveData()
 {
+    byte buffer[RECEIVE_PACKET_SIZE];
+
+    if (displaySerial.available() < RECEIVE_PACKET_SIZE)
+        return;
+
+    displaySerial.readBytes(buffer, RECEIVE_PACKET_SIZE);
+
+    data.mode = buffer[0] & 0b00010000;
+    data.brake = buffer[0] & 0b00001000;
+    data.gear = buffer[0] & 0b00000111;
 }
 
 void Display::sendData()
