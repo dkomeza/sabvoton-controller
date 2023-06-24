@@ -4,6 +4,8 @@
         "*.tcc": "cpp",
         "memory_resource": "cpp",
         "numeric": "cpp",
-        "limits": "cpp"
+        "limits": "cpp",
+        "string": "cpp",
+        "functional": "cpp"
     }
 }

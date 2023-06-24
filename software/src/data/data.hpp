@@ -25,6 +25,7 @@ public:
     bool softStart = true;
 
     int throttle = 0;
+    int torque = 0;
 };
 
 extern Data data;

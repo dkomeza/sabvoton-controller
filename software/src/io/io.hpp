@@ -18,6 +18,10 @@
 #define VOLTAGE_R1 1000000
 #define VOLTAGE_R2 56000
 
+#define TORQUE_SENSOR_PIN 33
+#define TORQUE_VOLTAGE_MIN 1.5
+#define TORQUE_VOLTAGE_MAX 3
+
 struct Temperature
 {
     int battery;
@@ -31,10 +35,12 @@ public:
     void update();
 
 private:
-    Temperature getTemperature();
+    void getTemperature();
+    void getVoltage();
+    void getTorque();
+
     int readTemperature(int pin);
     int convertTemperature(float temperature);
-    void getVoltage();
 };
 
 extern IO io;

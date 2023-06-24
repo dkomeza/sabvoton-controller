@@ -2,22 +2,16 @@
 
 void IO::update()
 {
-    Temperature temperature = getTemperature();
-
-    data.batteryTemp = temperature.battery;
-    data.engineTemp = temperature.motor;
-    data.controllerTemp = temperature.controller;
+    getTemperature();
+    getVoltage();
+    getTorque();
 }
 
-Temperature IO::getTemperature()
+void IO::getTemperature()
 {
-    Temperature temperature;
-
-    temperature.battery = readTemperature(BATTERY_TEMPERATURE_PIN);
-    temperature.motor = readTemperature(MOTOR_TEMPERATURE_PIN);
-    temperature.controller = readTemperature(CONTROLLER_TEMPERATURE_PIN);
-
-    return temperature;
+    data.batteryTemp = readTemperature(BATTERY_TEMPERATURE_PIN);
+    data.engineTemp = readTemperature(MOTOR_TEMPERATURE_PIN);
+    data.controllerTemp = readTemperature(CONTROLLER_TEMPERATURE_PIN);
 }
 
 int IO::readTemperature(int pin)
@@ -58,4 +52,15 @@ void IO::getVoltage()
     long double voltageDividerValue = voltageValue / voltageDivider;
 
     data.batteryVoltage = voltageDividerValue * 10;
+}
+
+void IO::getTorque()
+{
+    uint16_t torque = analogRead(TORQUE_SENSOR_PIN);
+
+    double torqueValue = (torque * 3.3 / 4095 - TORQUE_VOLTAGE_MIN) * 1000;
+
+    int torqueOutput = map(torqueValue, 0, (TORQUE_VOLTAGE_MAX - TORQUE_VOLTAGE_MIN) * 1000, 0, 256);
+
+    data.torque = torqueOutput;
 }
