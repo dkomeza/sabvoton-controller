@@ -12,22 +12,35 @@ Controller controller;
 IO io;
 Data data;
 
+bool is_connected = false;
+
 void handleDelay(long now);
 
 void setup()
 {
-  IPAddress ip = setupOTA();
+  Serial.begin(115200);
+
+  is_connected = setupOTA();
+
+  Serial.println(is_connected);
 }
 
 void loop()
 {
   long now = millis();
 
-  io.update();
-  controller.update();
-  display.update();
+  if (!is_connected)
+  {
+    io.update();
+    controller.update();
+    display.update();
+  }
+  else
+  {
+    ArduinoOTA.handle();
 
-  ArduinoOTA.handle();
+    Serial.println("OTA");
+  }
 
   handleDelay(now); // Ensure consistent loop time
 }

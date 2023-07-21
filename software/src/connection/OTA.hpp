@@ -4,16 +4,22 @@
 #include <WiFiUdp.h>
 #include <Arduino.h>
 
-IPAddress setupOTA()
+bool setupOTA()
 {
     ArduinoOTA.setHostname("SBV-CTRL");
 
     WiFi.mode(WIFI_STA);
     WiFi.begin("SBV-CTRL", "12345678");
 
-    WiFi.waitForConnectResult(5000);
+    if (WiFi.waitForConnectResult(2000) != WL_CONNECTED)
+    {
+        WiFi.mode(WIFI_OFF);
+        WiFi.disconnect();
+        ArduinoOTA.end();
+        return false;
+    }
 
     ArduinoOTA.begin();
 
-    return WiFi.localIP();
+    return true;
 }
