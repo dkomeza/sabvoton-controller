@@ -1,66 +1,133 @@
-#include "io.hpp"
+#include "io.h"
 
-void IO::update()
+using namespace IO_Constants;
+
+void IO::setup()
 {
-    getTemperature();
-    getVoltage();
-    getTorque();
+    // Set up pins
+    pinMode(BATTERY_VOLTAGE_PIN, INPUT);
+    pinMode(VOLTAGE_REFERENCE_PIN, INPUT);
+    pinMode(BATTERY_TEMPERATE_PIN, INPUT);
+    pinMode(CONTROLLER_TEMPERATURE_PIN, INPUT);
+    pinMode(ENGINE_TEMPERATURE_PIN, INPUT);
+    pinMode(TORQUE_SENSOR_PIN, INPUT);
+    pinMode(ROTATION_SENSOR_PIN, INPUT);
+
+    // Set up the voltage reference
+    getVoltageOffset();
+}
+
+void IO::handle()
+{
+    if (millis() < lastVoltageTime)
+        lastVoltageTime = millis();
+
+    if (millis() - lastVoltageTime >= voltageInterval)
+    {
+        getBatteryVoltage();
+        lastVoltageTime = millis();
+    }
+
+    if (millis() < lastTemperatureTime)
+        lastTemperatureTime = millis();
+
+    if (millis() - lastTemperatureTime >= temperatureInterval)
+    {
+        getTemperature();
+        lastTemperatureTime = millis();
+    }
+
+    if (millis() < lastTorqueTime)
+        lastTorqueTime = millis();
+
+    if (millis() - lastTorqueTime >= torqueInterval)
+    {
+        getTorque();
+        lastTorqueTime = millis();
+    }
+}
+
+void IO::getVoltageOffset()
+{
+    // Map the voltage reference to 0-4095
+    int reference = map(VOLTAGE_REFERENCE * 1000, 0, 3300, 0, 4095);
+
+    // Read the voltage reference
+    int voltage = 0;
+    for (int i = 0; i < VOLTAGE_REFERENCE_SAMPLES; i++)
+    {
+        voltage += analogRead(VOLTAGE_REFERENCE_PIN);
+    }
+    voltage /= VOLTAGE_REFERENCE_SAMPLES;
+
+    // Calculate the offset
+    voltageOffset = reference - voltage;
 }
 
 void IO::getTemperature()
 {
-    data.batteryTemp = readTemperature(BATTERY_TEMPERATURE_PIN);
-    data.engineTemp = readTemperature(MOTOR_TEMPERATURE_PIN);
-    data.controllerTemp = readTemperature(CONTROLLER_TEMPERATURE_PIN);
+    data.mainData.engineTemperature = readThermistor(ENGINE_TEMPERATURE_PIN);
+    data.mainData.controllerTemperature = readThermistor(CONTROLLER_TEMPERATURE_PIN);
+    data.mainData.batteryTemperature = readThermistor(BATTERY_TEMPERATE_PIN);
 }
 
-int IO::readTemperature(int pin)
+int IO::readThermistor(int pin)
 {
-    float temperature = 0;
-    for (int i = 0; i < SAMPLE_COUNT; i++)
-    {
-        temperature += analogRead(pin);
-    }
+    float temperature = readAnalogPin(pin, THERMISTOR_SAMPLES);
 
-    temperature /= SAMPLE_COUNT;
-
-    return convertTemperature(temperature);
+    return convertThermistor(temperature);
 }
 
-int IO::convertTemperature(float _temperature)
+int IO::convertThermistor(float temperature)
 {
-    float temperature = 4095 / _temperature - 1;
-    temperature = THERMISTOR_R1 / temperature;
+    float temp = 4095 / temperature - 1;
+    temp = THERMISTOR_R1 / temp;
+    temp = temp / THERMISTOR_R2;
 
-    temperature = temperature / THERMISTOR_NOMINAL_RESISTANCE;
-    temperature = log(temperature);
-    temperature /= THERMISTOR_BETA;
-    temperature += 1.0 / (THERMISTOR_NOMINAL_TEMPERATURE + 273.15);
-    temperature = 1.0 / temperature;
-    temperature -= 273.15;
-    return temperature;
-}
+    temp = log(temp);
+    temp /= THERMISTOR_BETA;
 
-void IO::getVoltage()
-{
-    int voltage = analogRead(VOLTAGE_PIN);
+    temp += 1.0 / (THERMISTOR_NOMINAL_TEMPERATURE + 273.15);
+    temp = 1.0 / temp;
+    temp -= 273.15;
 
-    double voltageValue = voltage * 3.3 / 4095;
-
-    long double voltageDivider = VOLTAGE_R2 / (VOLTAGE_R1 + VOLTAGE_R2);
-
-    long double voltageDividerValue = voltageValue / voltageDivider;
-
-    data.batteryVoltage = voltageDividerValue * 10;
+    return temp;
 }
 
 void IO::getTorque()
 {
-    uint16_t torque = analogRead(TORQUE_SENSOR_PIN);
+    uint16_t torque = readAnalogPin(TORQUE_SENSOR_PIN, TORQUE_SENSOR_SAMPLES);
 
-    double torqueValue = (torque * 3.3 / 4095 - TORQUE_VOLTAGE_MIN) * 1000;
+    double torqueValue = (torque * 3.3 / 4095 - TORQUE_SENSOR_MIN) * 1000;
 
-    int torqueOutput = map(torqueValue, 0, (TORQUE_VOLTAGE_MAX - TORQUE_VOLTAGE_MIN) * 1000, 0, 256);
+    int torqueOutput = map(torqueValue, 0, (TORQUE_SENSOR_MAX - TORQUE_SENSOR_MIN) * 1000, 0, 255);
+
+    if (torqueOutput < 0)
+        torqueOutput = 0;
+    else if (torqueOutput > 255)
+        torqueOutput = 255;
 
     data.torque = torqueOutput;
+}
+
+void IO::getBatteryVoltage()
+{
+    uint16_t voltage = readAnalogPin(BATTERY_VOLTAGE_PIN, BATTERY_VOLTAGE_SAMPLES);
+
+    double voltageValue = (voltage * 3.3 / 4095) * (DIVIDER_R1 + DIVIDER_R2) / DIVIDER_R2;
+
+    data.mainData.batteryVoltage = voltageValue * 10;
+}
+
+uint16_t IO::readAnalogPin(int pin, int samples)
+{
+    uint16_t value = 0;
+    for (int i = 0; i < samples; i++)
+    {
+        value += analogRead(pin);
+    }
+    value /= samples;
+    value += voltageOffset;
+
+    return value;
 }

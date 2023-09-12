@@ -1,59 +1,63 @@
 #include <Arduino.h>
+#include <EEPROM.h>
 
-#include "./connection/OTA.hpp"
+#include "connection/OTA.h"
+#include "connection/bluetooth.h"
 
-#include "./display/display.hpp"
-#include "./controller/controller.hpp"
-#include "./io/io.hpp"
-#include "./data/data.hpp"
+#include "data/data.h"
+#include "controller/controller.h"
+#include "io/io.h"
+#include "display/display.h"
 
-Display display;
+Data data;
 Controller controller;
 IO io;
-Data data;
+Display display;
+Bluetooth bluetooth;
 
-bool is_connected = false;
+long lastTime = 0;
 
-void handleDelay(long now);
+bool isConnected = false;
 
 void setup()
 {
-  Serial.begin(115200);
+    Serial.begin(115200);
 
-  is_connected = setupOTA();
+    // set up EEPROM
+    EEPROM.begin(512);
 
-  Serial.println(is_connected);
+    /* Set up OTA and check whether connected */
+    isConnected = OTA::setupOTA();
+
+    if (!isConnected)
+    {
+        data.init();
+        io.setup();
+        controller.setup();
+        bluetooth.setup();
+        display.init();
+
+        data.mainData.gear = 3;
+    }
+
+    lastTime = millis();
 }
 
 void loop()
 {
-  long now = millis();
+    if (isConnected)
+    {
+        OTA::handle();
+    }
+    else
+    {
+        if (!bluetooth.settingsEnabled)
+        {
+            io.handle();
+            controller.handle();
+            display.handle();
+        }
+    }
 
-  if (!is_connected)
-  {
-    io.update();
-    controller.update();
-    display.update();
-  }
-  else
-  {
-    ArduinoOTA.handle();
-
-    Serial.println("OTA");
-  }
-
-  handleDelay(now); // Ensure consistent loop time
-}
-
-void handleDelay(long now)
-{
-  long time_diff = millis() - now;
-  int delay_time = 10 - time_diff;
-
-  while (delay_time < 0)
-  {
-    delay_time += 10;
-  }
-
-  delay(delay_time);
+    delay(10);
 }

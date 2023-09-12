@@ -1,11 +1,15 @@
 {
-    "C_Cpp.errorSquiggles": "disabled",
-    "files.associations": {
-        "*.tcc": "cpp",
-        "memory_resource": "cpp",
-        "numeric": "cpp",
-        "limits": "cpp",
-        "string": "cpp",
-        "functional": "cpp"
-    }
+  "C_Cpp.errorSquiggles": "disabled",
+  "files.associations": {
+    "*.tcc": "cpp",
+    "memory_resource": "cpp",
+    "numeric": "cpp",
+    "limits": "cpp",
+    "string": "cpp",
+    "functional": "cpp",
+    "array": "cpp",
+    "string_view": "cpp",
+    "initializer_list": "cpp",
+    "utility": "cpp"
+  }
 }
